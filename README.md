@@ -23,7 +23,7 @@ El modelo se pone más específico: debemos considerar distintos tipos de nave. 
 Son naves cuya principal responsabilidad es mostrar una baliza de un determinado color. Para representar los colores vamos a usar Strings, p.ej. `"verde"`, `"rojo"` o `"azul"`.  
 Deben entender el mensaje `cambiarColorDeBaliza(colorNuevo)`.
 1. **Naves de pasajeros**  
-Llevan una cantidad de pasajeros que se indica para cada nave. Hay que registrar cuántas raciones de comida, y cuántas de bebida, se cargan en la nave. Para eso agregar métodos que permitan cargar y descargar una cantidad de raciones de comida, y lo mismo de bebida. 
+Llevan una cantidad de pasajeros que se indica para cada nave. Hay que registrar cuántas raciones de comida, y cuántas de bebida, se cargan en la nave. Para eso agregar métodos que permitan cargar y descargar una cantidad de raciones de comida, y lo mismo de bebida.   
 1. **Naves de combate**  
 Entienden estos mensajes:
 	- `ponerseVisible()`, `ponerseInvisible()`, `estaInvisible()`: puede estar visiblo o invisible.
