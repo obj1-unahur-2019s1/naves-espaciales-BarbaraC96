@@ -1,7 +1,7 @@
 class NaveEspacial {
-	var velocidad = 12000
-	var direccion = 0	
-	var combustible = 4000
+	var property velocidad = 0
+	var property direccion = 0	
+	var property combustible = 0
 	method velocidad(cuanto) { velocidad = cuanto }
 	method acelerar(cuanto) { velocidad = (velocidad + cuanto).min(100000) }
 	method desacelerar(cuanto) { velocidad -= cuanto }
@@ -25,7 +25,7 @@ class NaveEspacial {
 		
 	method escapar() {}
 	method avisar() {}
-	method estaTranquila() {}
+	method estaTranquila() { return combustible>=4000 and velocidad<=12000 }
 }
 
 class NaveBaliza inherits NaveEspacial {
@@ -38,7 +38,7 @@ class NaveBaliza inherits NaveEspacial {
 	}
 	override method escapar() { super() self.irHaciaElSol() }
     override method avisar() { super() self.cambiarColorDeBaliza("rojo") }
-    method estaTranquila(colorNuevo) { self.cambiarColorDeBaliza(colorNuevo) }
+    override method estaTranquila() { return super() and colorBaliza != "rojo" }
 } 
 
 class NavePasajeros inherits NaveEspacial {
@@ -62,12 +62,12 @@ class NavePasajeros inherits NaveEspacial {
 }
 
 class NavesCombate inherits NaveEspacial {
-	var property invisible = false 
+	var property invisible = true 
 	var property estaDesplegado = false
-	const property menEmitidos = []
+	var property menEmitidos = []
 	
-	method ponerseVisible() { invisible = true }
-	method ponerseInvisible() { invisible = false }
+	method ponerseVisible() { invisible = false }
+	method ponerseInvisible() { invisible = true }
 	method estaInvisible() { return invisible } //devuelve, te dice si esta invisible
 	
 	method desplegarMisiles() { estaDesplegado = true }
@@ -78,9 +78,9 @@ class NavesCombate inherits NaveEspacial {
 	method mensajesEmitidos() { return menEmitidos }
 	method primerMensajeEmitido() { return menEmitidos.first()}
 	method ultimoMensajeEmitido() { return menEmitidos.last()}
-	method esEscueta() { return not menEmitidos.any({mensaje => mensaje.size()>30})}
+	method esEscueta() { return not menEmitidos.any({mensaje => mensaje.size()>=30})}
 	method emitioMensaje(mensaje) { return menEmitidos.contains(mensaje) }
-	//return menEmitidos.size()>0
+	//return menEmitidos.any({m => m == mensaje})
 	
 	override method prepararViaje() { super() self.ponerseVisible()
 		self.replegarMisiles()
@@ -92,14 +92,14 @@ class NavesCombate inherits NaveEspacial {
 		self.acercarseUnPocoAlSol()
 	} 
 	override method avisar() { super() self.emitirMensaje("Amenaza recibida")}
-	 override method estaTranquila() { super() self.estaDesplegado()}
+	 override method estaTranquila() { return super() and self.estaDesplegado()}
 }
 
 class NavesHospital inherits NavePasajeros {
 	var property quirofanosPreparados = false
 	
-	override method recibirAmenaza() { super() self.quirofanosPreparados(true) }
-	override method estaTranquila() { super() self.quirofanosPreparados() }
+	override method recibirAmenaza() { super(); quirofanosPreparados = true }
+	override method estaTranquila() { return super() and not self.quirofanosPreparados()}
 }
 
 class NavesDeCombateSigilosa inherits NavesCombate {
@@ -107,8 +107,7 @@ class NavesDeCombateSigilosa inherits NavesCombate {
     override method escapar() { super() self.desplegarMisiles()
     	self.ponerseInvisible()
     }
-     override method estaTranquila() { super() self.estaDesplegado()
-     	self.invisible()
-     }
+    override method estaTranquila() { return super() and self.invisible()
+    }
 
 }

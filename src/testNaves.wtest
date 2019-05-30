@@ -1,5 +1,42 @@
 import naves.*
 
-describe "naves" {
+describe "test de NaveBaliza" {
 	
+	var naveBaliza = new NaveBaliza()
+	
+	test "prepararViaje()" {
+		
+		naveBaliza.prepararViaje()
+		
+		assert.equals(30000, naveBaliza.combustible())
+		assert.equals(5000, naveBaliza.velocidad())
+		assert.equals("verde", naveBaliza.color())
+		assert.equals(0, naveBaliza.direccion())
+	}
+	
+	test "escapar()" {
+		
+		naveBaliza.escapar()
+		
+		assert.equals(10, naveBaliza.direccion())
+	}
+	
+	test "avisar()" {
+		
+		naveBaliza.avisar()
+		
+		assert.equals("rojo", naveBaliza.color())
+	}
+	
+	test "estaTranquila()" {
+		
+	//	naveBaliza.estaTranquila()
+		
+		//assert.equals(false, naveBaliza.estaTranquila())
+		assert.notThat(naveBaliza.estaTranquila())
+		
+		naveBaliza.agregarCombustible(4000)
+		naveBaliza.cambiarColorDeBaliza("azul")
+		assert.that(naveBaliza.estaTranquila())
+	}
 }
